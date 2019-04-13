@@ -8,5 +8,102 @@
     <artifactId>invoices</artifactId>
     <version>0.1.0</version>
 
+    <!-- Define project properties -->
+    <properties>
+        <sonar.exclusions>**/Application.java</sonar.exclusions>
+        <sonar.host.url>http://localhost:9000</sonar.host.url>
+        <sonar.maven.plugin.version>3.6.0.1398</sonar.maven.plugin.version>
+        <spring.boot.version>2.1.4.RELEASE</spring.boot.version>
+        <springfox.version>3.0.0-SNAPSHOT</springfox.version>
+        <jacoco.plugin.version>0.8.3</jacoco.plugin.version>
+    </properties>
+
+    <!-- Add repositories -->
+    <repositories>
+        <repository>
+            <id>jcenter-spanshots</id>
+            <name>jcenter-snapshots</name>
+            <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+        </repository>
+    </repositories>
+
+    <!-- Spring Boot inheritance -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.4.RELEASE</version>
+    </parent>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <!-- Spring Boot -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- Additional dependencies -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- Test dependencies -->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- Plugins -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar.maven.plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco.plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <!-- Exclude application class as it has only main method. -->
+                        <exclude>rs/co/tntech/invoices/Application.*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <!-- attached to Maven test phase -->
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
